@@ -25,7 +25,17 @@ fetch(api_url)
       }
       if (json[i].url !== "month") {
         deadlines[c] = json[i].deadline;
-        let cut = deadlines[c].substr(deadlines[c].indexOf('申込締切：') + 5);
+        let mous = deadlines[c].indexOf('申込締切：');
+        let cut = deadlines[c];
+        if (mous !== -1){
+          cut = deadlines[c].substr(deadlines[c].indexOf('申込締切：') + 5);
+        }
+
+        let oubo = deadlines[c].indexOf('応募締切：');
+        if (oubo !== -1){
+          cut = deadlines[c].substr(deadlines[c].indexOf('応募締切：') + 5);
+        }
+
         let m = cut.indexOf('/');
         let year24 = cut.indexOf('2024');
         let year25 = cut.indexOf('2025');
@@ -33,12 +43,14 @@ fetch(api_url)
           let k = cut;
           cut = k.substr(k.indexOf('202') + 5);
         }
+
         let offLine = cut.indexOf('オフライン見学会：');
         let onLine = cut.indexOf('オンライン見学会：');
         if (offLine !== -1 || onLine !== -1) {
           let k = cut;
           cut = k.substr(k.indexOf('見学会：') + 4);
         }
+
         let cut2;
         let cut3;
         if (m === -1) {
@@ -49,6 +61,7 @@ fetch(api_url)
           cut2 = cut.substr(0, cut.indexOf('/')) + cut.substr(cut.indexOf('/') + 1);
           cut3 = cut.substr(0, cut.indexOf('/'));
         }
+
         let kar = parseInt(cut2, 10);
         cut3 = parseInt(cut3, 10);
         let nowyear;
@@ -82,6 +95,7 @@ fetch(api_url)
         sortdata[c][1] = b;
         c++;
       }
+
       if (a % 4 === 0) {
         if (a === 0) {
           insertElement += '<div class="case">'
